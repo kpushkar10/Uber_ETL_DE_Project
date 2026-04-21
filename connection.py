@@ -21,6 +21,10 @@ EVENT_HUBNAME = os.getenv("EVENT_HUBNAME")
 def send_to_event_hub(ride_data=None, batch_size=1):
 
     try:
+        try:
+            from azure.eventhub import EventHubProducerClient, EventData
+        except ImportError:
+            raise RuntimeError("azure-eventhub package is required to send events. Install it with: pip install azure-eventhub")
         # Initialize Event Hub Producer Client
         producer = EventHubProducerClient.from_connection_string(
             CONNECTION_STRING,
